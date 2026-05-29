@@ -1,0 +1,31 @@
+% Master Diagram 1 -- Dynamic CMOS gate (3-input NAND)
+% Base for Q1 (pseudo-nMOS), Q2 (dynamic), Q3 (C2MOS), Q4 (domino), Q8 (n-p CMOS)
+% NOTE: transistors are placed with "path ... node" (no backslash-n command)
+% on purpose, so copy-paste tools cannot swallow characters. Valid LaTeX.
+\documentclass[border=10pt]{standalone}
+\usepackage{circuitikz}
+\begin{document}
+\begin{circuitikz}
+% supply rail
+\draw (-2,11) -- (2,11) node[right]{$V_{DD}$};
+% precharge PMOS
+\path (0,9.5) node[pmos] (P1){};
+\draw (P1.S) -- (0,11);
+\draw (P1.G) -- (-1.8,9.5) node[left]{$\phi$};
+\draw (P1.D) -- (0,8.3) coordinate (Z);
+\path (Z) node[circ]{};
+\draw (Z) -- (1.8,8.3) node[right]{$Z$};
+% n-block: three NMOS in series (A, B, C)
+\path (0,6.8) node[nmos] (NA){}; \draw (NA.D) -- (Z);
+\draw (NA.G) -- (-1.8,6.8) node[left]{$A$};
+\path (0,5.0) node[nmos] (NB){}; \draw (NB.D) -- (NA.S);
+\draw (NB.G) -- (-1.8,5.0) node[left]{$B$};
+\path (0,3.2) node[nmos] (NC){}; \draw (NC.D) -- (NB.S);
+\draw (NC.G) -- (-1.8,3.2) node[left]{$C$};
+% clocked foot NMOS
+\path (0,1.4) node[nmos] (NF){}; \draw (NF.D) -- (NC.S);
+\draw (NF.G) -- (-1.8,1.4) node[left]{$\phi$};
+\draw (NF.S) -- (0,0);
+\path (0,0) node[ground]{};
+\end{circuitikz}
+\end{document}

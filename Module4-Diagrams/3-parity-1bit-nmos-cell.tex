@@ -1,0 +1,48 @@
+% Master Diagram 3 -- Parity 1-bit nMOS cell
+% Base for Q17 (CMOS version adds a p-block), Q18, Q20
+% Depletion loads are shown as NMOS with gate tied to source (standard convention).
+\documentclass[border=10pt]{standalone}
+\usepackage{circuitikz}
+\begin{document}
+\begin{circuitikz}
+% rails
+\draw (-2,8) -- (5.5,8) node[right]{$V_{DD}$};
+\draw (-2,0) -- (5.5,0);
+\path (2,0) node[ground]{};
+% depletion pull-up load (gate tied to source)
+\path (0,6.4) node[nmos] (D1){};
+\draw (D1.D) -- (0,8);
+\draw (D1.S) -- (0,5.2) coordinate (PB);
+\path (PB) node[circ]{};
+\draw (D1.G) -| (-1.1,5.6) -- (0,5.6);
+% Pbar_i node + bus
+\draw (PB) -- (0,4.6);
+\draw (-0.8,4.6) -- (1.0,4.6);
+\path (1.0,4.7) node[above]{$\overline{P}_i$};
+% branch 1
+\path (-0.8,3.4) node[nmos] (T1a){}; \draw (T1a.D) -- (-0.8,4.6);
+\draw (T1a.G) -- (-1.9,3.4) node[left]{$A_i$};
+\path (-0.8,1.6) node[nmos] (T1b){}; \draw (T1b.D) -- (T1a.S);
+\draw (T1b.G) -- (-1.9,1.6) node[left]{$\overline{P}_{i-1}$};
+\draw (T1b.S) -- (-0.8,0);
+% branch 2 (mirrored so gates face right)
+\path (0.8,3.4) node[nmos, xscale=-1] (T2a){}; \draw (T2a.D) -- (0.8,4.6);
+\draw (T2a.G) -- (1.9,3.4) node[right]{$\overline{A}_i$};
+\path (0.8,1.6) node[nmos, xscale=-1] (T2b){}; \draw (T2b.D) -- (T2a.S);
+\draw (T2b.G) -- (1.9,1.6) node[right]{$P_{i-1}$};
+\draw (T2b.S) -- (0.8,0);
+% static inverter
+\path (4,6.4) node[nmos] (D2){};
+\draw (D2.D) -- (4,8);
+\draw (D2.S) -- (4,5.2) coordinate (PO);
+\path (PO) node[circ]{};
+\draw (D2.G) -| (3.0,5.6) -- (4,5.6);
+\path (4,2.8) node[nmos] (T3){};
+\draw (T3.D) -- (PO);
+\draw (T3.S) -- (4,0);
+% Pbar_i drives inverter input
+\draw (0,4.6) -- (2.3,4.6) -- (2.3,2.8) -- (T3.G);
+% output
+\draw (PO) -- (5.3,5.2) node[right]{$P_i$};
+\end{circuitikz}
+\end{document}
