@@ -1,0 +1,43 @@
+% Q17 -- Parity generator 1-bit cell, CMOS (schematic).
+% Pull-down n-block shown explicitly (two series branches); complementary pull-up
+% p-block shown as its dual network box; output buffered by a static CMOS inverter.
+\documentclass[border=10pt]{standalone}
+\usepackage{circuitikz}
+\begin{document}
+\begin{circuitikz}
+\draw (-2,9) -- (6,9) node[right]{$V_{DD}$};
+\draw (-2,0) -- (6,0);
+\path (2,0) node[ground]{};
+% pull-up p-block (dual network) as a box
+\draw[thick] (-0.9,6.6) rectangle (0.9,8.2);
+\node at (0,7.4) {p-block};
+\draw (0,9) -- (0,8.2);
+\draw (0,6.6) -- (0,5.6) coordinate (PB);
+\path (PB) node[circ]{};
+\node[above right] at (PB) {$\overline{P}_i$};
+% n-block bus
+\draw (PB) -- (0,5.0);
+\draw (-0.8,5.0) -- (0.8,5.0);
+% branch 1
+\path (-0.8,3.6) node[nmos] (T1a){}; \draw (T1a.D) -- (-0.8,5.0);
+\draw (T1a.G) -- (-1.9,3.6) node[left]{$A_i$};
+\path (-0.8,1.8) node[nmos] (T1b){}; \draw (T1b.D) -- (T1a.S);
+\draw (T1b.G) -- (-1.9,1.8) node[left]{$\overline{P}_{i-1}$};
+\draw (T1b.S) -- (-0.8,0);
+% branch 2
+\path (0.8,3.6) node[nmos, xscale=-1] (T2a){}; \draw (T2a.D) -- (0.8,5.0);
+\draw (T2a.G) -- (1.9,3.6) node[right]{$\overline{A}_i$};
+\path (0.8,1.8) node[nmos, xscale=-1] (T2b){}; \draw (T2b.D) -- (T2a.S);
+\draw (T2b.G) -- (1.9,1.8) node[right]{$P_{i-1}$};
+\draw (T2b.S) -- (0.8,0);
+% static CMOS inverter -> P_i
+\path (4,7) node[pmos] (IP){}; \draw (IP.S) -- (4,9);
+\path (4,2) node[nmos] (IN){}; \draw (IN.S) -- (4,0);
+\draw (IP.D) -- (4,4.5) coordinate (PO);
+\draw (IN.D) -- (PO);
+\path (PO) node[circ]{};
+\draw (PO) -- (6,4.5) node[right]{$P_i$};
+\draw (IP.G) -- (2.6,7); \draw (IN.G) -- (2.6,2);
+\draw (2.6,7) -- (2.6,2); \draw (2.6,4.5) -- (PB);
+\end{circuitikz}
+\end{document}

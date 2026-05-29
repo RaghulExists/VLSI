@@ -1,0 +1,41 @@
+% Q4 -- CMOS Domino gate (dynamic 2-input AND)
+% Dynamic NAND core (precharge PMOS phi, n-block A,B, foot NMOS phi) + static inverter -> Z.
+\documentclass[border=10pt]{standalone}
+\usepackage{circuitikz}
+\begin{document}
+\begin{circuitikz}
+\draw (-3,9.5) -- (5.2,9.5) node[right]{$V_{DD}$};
+\draw (-3,0) -- (5.2,0);
+\path (4.8,0) node[ground]{};
+% precharge PMOS
+\path (0,8) node[pmos] (PP){};
+\draw (PP.S) -- (0,9.5);
+\draw (PP.G) -- (-1.8,8) node[left]{$\phi$};
+\draw (PP.D) -- (0,6.6) coordinate (X);
+\path (X) node[circ]{};
+\node[above left] at (X) {$X$};
+% n-block A,B
+\path (0,5.2) node[nmos] (NA){}; \draw (NA.D) -- (X);
+\draw (NA.G) -- (-1.8,5.2) node[left]{$A$};
+\path (0,3.4) node[nmos] (NB){}; \draw (NB.D) -- (NA.S);
+\draw (NB.G) -- (-1.8,3.4) node[left]{$B$};
+% foot
+\path (0,1.6) node[nmos] (NF){}; \draw (NF.D) -- (NB.S);
+\draw (NF.G) -- (-1.8,1.6) node[left]{$\phi$};
+\draw (NF.S) -- (0,0);
+% static inverter
+\path (3,8) node[pmos] (IP){};
+\draw (IP.S) -- (3,9.5);
+\path (3,2.5) node[nmos] (IN){};
+\draw (IN.S) -- (3,0);
+\draw (IP.D) -- (3,5.2) coordinate (Y);
+\draw (IN.D) -- (Y);
+\path (Y) node[circ]{};
+\draw (Y) -- (5.2,5.2) node[right]{$Z$};
+% inverter input from dynamic node X
+\draw (IP.G) -- (1.5,8);
+\draw (IN.G) -- (1.5,2.5);
+\draw (1.5,8) -- (1.5,2.5);
+\draw (1.5,6.6) -- (X);
+\end{circuitikz}
+\end{document}

@@ -1,0 +1,51 @@
+% Q8 -- n-p CMOS (NORA) logic: an n-block dynamic stage cascaded into a p-block dynamic stage.
+% Logic blocks shown as boxes; the clocked precharge/evaluate transistors are explicit.
+\documentclass[border=10pt]{standalone}
+\usepackage{circuitikz}
+\begin{document}
+\begin{circuitikz}
+% ===== Stage 1 : n-block dynamic (clocked by phi) =====
+\draw (-2.2,9.5) -- (3.2,9.5) node[right]{$V_{DD}$};
+\draw (-2.2,0) -- (8.6,0);
+\path (8.2,0) node[ground]{};
+% precharge PMOS (phi)
+\path (0,8) node[pmos] (P1){};
+\draw (P1.S) -- (0,9.5);
+\draw (P1.G) -- (-2,8) node[left]{$\phi$};
+\draw (P1.D) -- (0,6.8) coordinate (O1);
+\path (O1) node[circ]{};
+% n-block box
+\draw[thick] (-0.9,4.2) rectangle (0.9,6.2);
+\node at (0,5.2) {n-block};
+\draw (O1) -- (0,6.2);
+\draw (0,4.2) -- (0,3.0);
+% evaluate foot NMOS (phi)
+\path (0,2.0) node[nmos] (N1){};
+\draw (N1.D) -- (0,3.0);
+\draw (N1.G) -- (-2,2.0) node[left]{$\phi$};
+\draw (N1.S) -- (0,0);
+% ===== Stage 2 : p-block dynamic (clocked by phi-bar) =====
+\draw (3.2,9.5) -- (8.6,9.5);
+% head PMOS (phi-bar)
+\path (6,8) node[pmos] (P2){};
+\draw (P2.S) -- (6,9.5);
+\draw (P2.G) -- (8.4,8) node[right]{$\overline{\phi}$};
+\draw (P2.D) -- (6,6.8);
+% p-block box
+\draw[thick] (5.1,4.2) rectangle (6.9,6.2);
+\node at (6,5.2) {p-block};
+\draw (6,6.8) -- (6,6.2);
+\draw (6,4.2) -- (6,3.0) coordinate (O2);
+\path (O2) node[circ]{};
+% precharge NMOS (phi-bar) pulls O2 low during precharge
+\path (6,1.8) node[nmos] (N2){};
+\draw (N2.D) -- (O2);
+\draw (N2.G) -- (8.4,1.8) node[right]{$\overline{\phi}$};
+\draw (N2.S) -- (6,0);
+% connect stage-1 output to stage-2 logic input (no inverter between)
+\draw (O1) -- (3.0,6.8) -- (3.0,5.2) -- (5.1,5.2);
+\node[align=center] at (1.6,3.7) {stage 1\\ ($\phi$)};
+\node[align=center] at (7.6,3.7) {stage 2\\ ($\overline{\phi}$)};
+\draw (O2) -- (7.6,3.0) node[right]{out};
+\end{circuitikz}
+\end{document}

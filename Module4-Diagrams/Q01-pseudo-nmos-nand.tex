@@ -1,0 +1,27 @@
+% Q1 -- Pseudo-nMOS 3-input NAND
+% Derived from the dynamic-gate base: PMOS load with gate tied to GND (always ON),
+% n-block of 3 series NMOS, NO clocked foot.
+\documentclass[border=10pt]{standalone}
+\usepackage{circuitikz}
+\begin{document}
+\begin{circuitikz}
+\draw (-3,9.5) -- (2,9.5) node[right]{$V_{DD}$};
+\draw (-3,0) -- (2,0);
+\path (1.6,0) node[ground]{};
+% PMOS load, gate tied to GND (always on)
+\path (0,8) node[pmos] (P1){};
+\draw (P1.S) -- (0,9.5);
+\draw (P1.D) -- (0,6.6) coordinate (Z);
+\path (Z) node[circ]{};
+\draw (Z) -- (1.8,6.6) node[right]{$Z$};
+\draw (P1.G) -- (-2.6,8) -- (-2.6,0);
+% n-block: A, B, C in series
+\path (0,5.2) node[nmos] (NA){}; \draw (NA.D) -- (Z);
+\draw (NA.G) -- (-1.8,5.2) node[left]{$A$};
+\path (0,3.4) node[nmos] (NB){}; \draw (NB.D) -- (NA.S);
+\draw (NB.G) -- (-1.8,3.4) node[left]{$B$};
+\path (0,1.6) node[nmos] (NC){}; \draw (NC.D) -- (NB.S);
+\draw (NC.G) -- (-1.8,1.6) node[left]{$C$};
+\draw (NC.S) -- (0,0);
+\end{circuitikz}
+\end{document}

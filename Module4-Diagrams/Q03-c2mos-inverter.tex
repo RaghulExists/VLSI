@@ -1,0 +1,32 @@
+% Q3 -- Clocked CMOS (C2MOS) clocked inverter
+% VDD - logic PMOS(IN) - clocked PMOS(phi-bar) - Z - clocked NMOS(phi) - logic NMOS(IN) - GND
+\documentclass[border=10pt]{standalone}
+\usepackage{circuitikz}
+\begin{document}
+\begin{circuitikz}
+\draw (-3.4,10) -- (2.4,10) node[right]{$V_{DD}$};
+\draw (-3.4,0) -- (2.4,0);
+\path (1.8,0) node[ground]{};
+% pull-up
+\path (0,8.6) node[pmos] (PL){};
+\draw (PL.S) -- (0,10);
+\path (0,6.9) node[pmos] (PC){};
+\draw (PL.D) -- (PC.S);
+\draw (PC.G) -- (-1.8,6.9) node[left]{$\overline{\phi}$};
+\draw (PC.D) -- (0,5.5) coordinate (Z);
+\path (Z) node[circ]{};
+\draw (Z) -- (2.4,5.5) node[right]{$Z$};
+% pull-down
+\path (0,4.1) node[nmos] (NC){};
+\draw (NC.D) -- (Z);
+\draw (NC.G) -- (-1.8,4.1) node[left]{$\phi$};
+\path (0,2.4) node[nmos] (NL){};
+\draw (NL.D) -- (NC.S);
+\draw (NL.S) -- (0,0);
+% shared logic input IN to PL and NL gates
+\draw (PL.G) -- (-2.8,8.6);
+\draw (NL.G) -- (-2.8,2.4);
+\draw (-2.8,8.6) -- (-2.8,2.4);
+\draw (-2.8,5.5) -- (-3.6,5.5) node[left]{IN};
+\end{circuitikz}
+\end{document}

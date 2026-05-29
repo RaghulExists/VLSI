@@ -1,0 +1,17 @@
+% Q7 -- Standard adder element (one full-adder cell, block diagram)
+\documentclass[border=10pt]{standalone}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta}
+\begin{document}
+\begin{tikzpicture}[>=Latex]
+\draw[thick] (0,0) rectangle (3,2.4);
+\node at (1.5,1.2) {Adder element};
+% inputs
+\draw[->] (-1.5,1.8) node[left]{$A_k$} -- (0,1.8);
+\draw[->] (-1.5,0.6) node[left]{$B_k$} -- (0,0.6);
+\draw[->] (1.5,3.6) node[above]{$C_{k-1}$} -- (1.5,2.4);
+% outputs
+\draw[->] (3,1.2) -- (4.6,1.2) node[right]{$S_k$};
+\draw[->] (1.5,0) -- (1.5,-1.4) node[below]{$C_k$};
+\end{tikzpicture}
+\end{document}

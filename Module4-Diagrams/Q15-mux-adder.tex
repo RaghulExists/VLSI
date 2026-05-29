@@ -1,0 +1,36 @@
+% Q15 -- Multiplexer-based adder with stored/buffered sum.
+% 2:1 MUX (two transmission gates) selects C_(k-1) or its complement using
+% select S0 = A_k XOR B_k; output is inverted/buffered to give stored S_k.
+\documentclass[border=10pt]{standalone}
+\usepackage{circuitikz}
+\begin{document}
+\begin{circuitikz}
+% TG1 passes C_(k-1) when S0 = 0
+\path (2,5)   node[nmos, rotate=90]  (n1){};
+\path (2,6.4) node[pmos, rotate=-90] (p1){};
+\draw (n1.D) -- (p1.D);
+\draw (1.5,5.7) -- (0.2,5.7) node[left]{$C_{k-1}$};
+\draw (n1.S) -- (p1.S);
+\draw (2.5,5.7) -- (5,5.7) coordinate (M);     % merged node
+\draw (n1.G) -- (2,4.2) node[below]{$\overline{S_0}$};
+\draw (p1.G) -- (2,7.6) node[above]{$S_0$};
+% TG2 passes complement of C_(k-1) when S0 = 1
+\path (2,1.6) node[nmos, rotate=90]  (n2){};
+\path (2,3.0) node[pmos, rotate=-90] (p2){};
+\draw (n2.D) -- (p2.D);
+\draw (1.5,2.3) -- (0.2,2.3) node[left]{$\overline{C_{k-1}}$};
+\draw (n2.S) -- (p2.S);
+\draw (2.5,2.3) -- (5,2.3);
+\draw (5,2.3) -- (5,5.7);                       % both TG outputs to M
+\path (M) node[circ]{};
+\draw (n2.G) -- (2,0.8) node[below]{$S_0$};
+\draw (p2.G) -- (2,3.8) node[above]{$\overline{S_0}$};
+% output inverter/buffer -> stored S_k
+\draw (5,4.0) -- (6,4.0);
+\path (7,4.0) node[not port, scale=0.9] (inv){};
+\draw (6,4.0) -- (inv.in);
+\draw (inv.out) -- (9.2,4.0) node[right]{$S_k$ (stored)};
+\node[align=center, anchor=north west] at (0,-0.4)
+ {select $S_0 = A_k \oplus B_k$:\quad $S_0=0\Rightarrow S_k=C_{k-1}$,\quad $S_0=1\Rightarrow S_k=\overline{C_{k-1}}$};
+\end{circuitikz}
+\end{document}

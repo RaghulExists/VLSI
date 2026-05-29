@@ -1,0 +1,23 @@
+% Q5 -- Switch logic: pass transistor + transmission gate
+\documentclass[border=10pt]{standalone}
+\usepackage{circuitikz}
+\begin{document}
+\begin{circuitikz}
+% single pass transistor (left)
+\path (0,0) node[nmos, rotate=-90] (n){};
+\draw (n.S) -- (-1.8,0) node[left]{IN};
+\draw (n.D) -- (1.8,0) node[right]{OUT};
+\draw (n.G) -- (0,1.3) node[above]{$X$};
+\path (0,-2.2) node{Pass transistor};
+% transmission gate (right)
+\path (7,0)   node[nmos, rotate=90]  (tn){};
+\path (7,1.8) node[pmos, rotate=-90] (tp){};
+\draw (tn.D) -- (tp.D);
+\draw (6.5,0.9) -- (4.8,0.9) node[left]{IN};
+\draw (tn.S) -- (tp.S);
+\draw (7.5,0.9) -- (9.2,0.9) node[right]{OUT};
+\draw (tn.G) -- (7,-1.3) node[below]{$X$};
+\draw (tp.G) -- (7,3.1)  node[above]{$\overline{X}$};
+\path (7,-2.2) node{Transmission gate};
+\end{circuitikz}
+\end{document}
