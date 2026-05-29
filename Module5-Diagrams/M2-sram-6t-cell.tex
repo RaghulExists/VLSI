@@ -1,0 +1,39 @@
+% MASTER 2 -- 6T SRAM cell: two cross-coupled CMOS inverters (T1..T4) + 2 access
+% transistors (T5,T6) on the word line, connecting Q / Qbar to BL / BLbar.
+% Covers Q11 directly. Derive: 4T (Q10) = drop the two pMOS pull-ups; pseudo-static
+% RAM (Q12) = the same latch idea with a refresh path.
+\documentclass[border=10pt]{standalone}
+\usepackage{circuitikz}
+\begin{document}
+\begin{circuitikz}
+% rails
+\draw (-1,6.2) -- (5,6.2) node[right]{$V_{DD}$};
+\draw (-1,0) -- (5,0) node[right]{GND};
+% ---- left inverter (output Q) ----
+\path (0,4.6) node[pmos] (P1){};  \draw (P1.S) -- (0,6.2);
+\path (0,1.6) node[nmos] (N1){};  \draw (N1.S) -- (0,0);
+\draw (P1.D) -- (0,3.1) coordinate (Q);  \draw (N1.D) -- (0,3.1);
+\path (Q) node[circ]{};  \node[above left] at (Q) {$Q$};
+% ---- right inverter (output Qbar) ----
+\path (4,4.6) node[pmos] (P2){};  \draw (P2.S) -- (4,6.2);
+\path (4,1.6) node[nmos] (N2){};  \draw (N2.S) -- (4,0);
+\draw (P2.D) -- (4,3.1) coordinate (QB);  \draw (N2.D) -- (4,3.1);
+\path (QB) node[circ]{};  \node[above right] at (QB) {$\overline{Q}$};
+% ---- cross-coupling (two wires at different heights so they don't merge) ----
+\draw (P1.G) -- (-0.8,4.6) -- (-0.8,3.7) -- (4,3.7) -- (QB);   % inv1 gates <- Qbar
+\draw (N1.G) -- (-0.8,1.6) -- (-0.8,3.7);
+\draw (P2.G) -- (4.8,4.6) -- (4.8,2.5) -- (0,2.5) -- (Q);      % inv2 gates <- Q
+\draw (N2.G) -- (4.8,1.6) -- (4.8,2.5);
+% ---- access transistors on WL ----
+\path (-2.3,3.1) node[nmos, rotate=-90] (T5){};
+\draw (T5.D) -- (Q);
+\draw (T5.S) -- (-3.6,3.1) node[left]{$\overline{BL}$};
+\draw (T5.G) -- (-2.3,4.4) coordinate (wl5);
+\path (6.3,3.1) node[nmos, rotate=90] (T6){};
+\draw (T6.D) -- (QB);
+\draw (T6.S) -- (7.6,3.1) node[right]{$BL$};
+\draw (T6.G) -- (6.3,4.4) coordinate (wl6);
+% word line
+\draw (wl5) -- (wl6);  \node[above] at (2,4.4) {WL};
+\end{circuitikz}
+\end{document}

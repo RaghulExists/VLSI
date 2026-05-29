@@ -1,0 +1,20 @@
+% MASTER 1 -- 1T DRAM cell (access transistor + storage capacitor).
+% This is the "access-cell" atom: WL gates an nMOS; BL carries data; node stores charge.
+% Covers Q7 & Q8 directly; it is also the building block for the 3T cell (Q9).
+\documentclass[border=10pt]{standalone}
+\usepackage{circuitikz}
+\begin{document}
+\begin{circuitikz}
+% access nMOS
+\path (0,3) node[nmos] (M){};
+% bit line (top)
+\draw (M.D) -- (0,5) node[above]{BL};
+% word line (gate)
+\draw (M.G) -- (-2.4,3) node[left]{WL};
+% storage node + capacitor to ground
+\draw (M.S) -- (0,1.7) coordinate (sn);
+\node[right] at (0.15,1.9) {storage node};
+\draw (sn) to[C, l_=$C_S$] (0,0.2);
+\draw (0,0.2) node[ground]{};
+\end{circuitikz}
+\end{document}
