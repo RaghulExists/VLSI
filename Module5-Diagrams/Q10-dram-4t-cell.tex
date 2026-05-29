@@ -1,0 +1,44 @@
+% Q10 -- 4T DRAM cell.
+% Cross-coupled nMOS pair T1,T2 (storage on gate capacitances Cg1,Cg2; NO pMOS pull-ups);
+% access nMOS T3,T4 gated by a single Word Line WL connect the storage nodes to BL / BLbar.
+\documentclass[border=10pt]{standalone}
+\usepackage{circuitikz}
+\begin{document}
+\begin{circuitikz}
+% ground rail
+\draw (-1.5,0) -- (5.5,0) node[right]{GND};
+% ---- storage transistor T1 (left) ----
+\path (0,1.6) node[nmos] (T1){};
+\node[left] at (T1.G) {};
+\draw (T1.S) -- (0,0);
+\draw (T1.D) -- (0,3.0) coordinate (QL);   % left storage node
+\node[circ] at (QL) {}; \node[above left] at (QL) {$Q$};
+% ---- storage transistor T2 (right) ----
+\path (4,1.6) node[nmos] (T2){};
+\draw (T2.S) -- (4,0);
+\draw (T2.D) -- (4,3.0) coordinate (QR);   % right storage node
+\node[circ] at (QR) {}; \node[above right] at (QR) {$\overline{Q}$};
+% ---- cross-coupling: T1 gate <- QR, T2 gate <- QL ----
+\draw (T1.G) -- (-1.0,1.6) -- (-1.0,2.5) -- (4,2.5) -- (QR);
+\draw (T2.G) -- (5.0,1.6) -- (5.0,2.2) -- (0,2.2) -- (QL);
+% gate (storage) capacitances
+\draw (-1.0,1.6) to[C, l_=$C_{g1}$] (-1.0,0) node[ground]{};
+\draw (5.0,1.6) to[C, l=$C_{g2}$] (5.0,0) node[ground]{};
+% ---- access transistor T3 (left) on WL ----
+\path (-2.6,3.0) node[nmos, rotate=-90] (T3){};
+\draw (T3.D) -- (QL);
+\draw (T3.S) -- (-3.9,3.0) node[left]{$\overline{BL}$};
+\draw (T3.G) -- (-2.6,4.3) coordinate (wl3);
+\node[above left] at (T3.S) {T3};
+% ---- access transistor T4 (right) on WL ----
+\path (6.6,3.0) node[nmos, rotate=90] (T4){};
+\draw (T4.D) -- (QR);
+\draw (T4.S) -- (7.9,3.0) node[right]{$BL$};
+\draw (T4.G) -- (6.6,4.3) coordinate (wl4);
+\node[above right] at (T4.S) {T4};
+% word line joining both access gates
+\draw (wl3) -- (wl4); \node[above] at (2,4.3) {WL};
+% device labels for storage pair
+\node[above right] at (T1.D) {T1}; \node[above left] at (T2.D) {T2};
+\end{circuitikz}
+\end{document}

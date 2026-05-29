@@ -1,0 +1,19 @@
+% Q07 -- 1T DRAM cell (compare SRAM/DRAM; explain 1T DRAM in detail).
+% WL gates an nMOS access transistor; BL carries data; storage capacitor C_S holds charge.
+\documentclass[border=10pt]{standalone}
+\usepackage{circuitikz}
+\begin{document}
+\begin{circuitikz}
+% access nMOS
+\path (0,3) node[nmos] (M){};
+% bit line (top)
+\draw (M.D) -- (0,5) node[above]{BL};
+% word line (gate)
+\draw (M.G) -- (-2.4,3) node[left]{WL};
+% storage node + capacitor to ground
+\draw (M.S) -- (0,1.7) coordinate (sn);
+\node[right] at (0.15,1.9) {storage node};
+\draw (sn) to[C, l_=$C_S$] (0,0.2);
+\draw (0,0.2) node[ground]{};
+\end{circuitikz}
+\end{document}

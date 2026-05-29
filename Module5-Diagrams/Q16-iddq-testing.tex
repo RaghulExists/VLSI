@@ -1,0 +1,20 @@
+% Q16(b) -- IDDQ testing: CMOS circuit under test powered from VDD through an ammeter
+% measuring the quiescent supply current I_DDQ. Quiescent CMOS draws ~0 DC current (leakage
+% only); a bridging fault creates a measurable DC I_DD.
+\documentclass[border=10pt]{standalone}
+\usepackage{circuitikz}
+\begin{document}
+\begin{circuitikz}[font=\small]
+% VDD through ammeter (I_DDQ) into the circuit under test
+\draw (0,6.4) node[above]{$V_{DD}$} to[ammeter, l=$I_{DDQ}$] (0,4.4);
+\draw (0,4.4) -- (0,3.6);
+% circuit under test
+\node[draw, thick, minimum width=3.4cm, minimum height=2cm, align=center] (cut) at (0,2.4) {CMOS gate /\\ circuit under test};
+\draw (cut.south) -- (0,0.3) node[ground]{};
+\draw (cut.east) -- (2.6,1.4) node[right]{output};
+% annotation
+\node[draw=gray, align=left, font=\scriptsize, anchor=west] at (-2.6,-1.4)
+  {Not switching: $\sim$0 DC current (only leakage).\\
+   Bridging fault: measurable DC $I_{DD}$.};
+\end{circuitikz}
+\end{document}
