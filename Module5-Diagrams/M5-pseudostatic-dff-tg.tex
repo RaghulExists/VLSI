@@ -1,0 +1,36 @@
+% MASTER 5 -- CMOS pseudo-static D flip-flop using transmission gates (Q4).
+% Master TG (phi) samples D into an inverter; slave TG (phi-bar) closes the
+% feedback inverter loop to latch/hold (the feedback "refreshes" -> pseudo-static).
+\documentclass[border=10pt]{standalone}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta}
+\begin{document}
+\begin{tikzpicture}[>=Latex, font=\small,
+  tg/.style={draw, thick, trapezium, trapezium angle=70, minimum width=0.9cm}]
+\usetikzlibrary{shapes.geometric}
+% input inverter
+\node[draw, thick, isosceles triangle, isosceles triangle apex angle=60,
+      minimum width=1cm] (inv0) at (0,0) {};
+\node at (-0.2,0) {\scriptsize $\triangleright$};
+\draw[->] (-2.0,0) node[left]{$D$} -- (inv0.west);
+% master TG (phi)
+\node[draw, thick, minimum width=1.1cm, minimum height=0.8cm] (tg1) at (2.6,0) {TG};
+\node[above, font=\scriptsize] at (2.6,0.45) {$\phi$};
+\draw[->] (inv0.east) -- (tg1.west);
+% storage / output inverters (buffer + feedback)
+\node[draw, thick, isosceles triangle, isosceles triangle apex angle=60,
+      minimum width=1cm] (inv1) at (4.8,0) {};
+\node at (4.6,0) {\scriptsize $\triangleright$};
+\draw[->] (tg1.east) -- (inv1.west) node[midway,above,font=\scriptsize]{};
+\node[draw, thick, isosceles triangle, isosceles triangle apex angle=60,
+      minimum width=1cm] (inv2) at (7.2,0) {};
+\node at (7.0,0) {\scriptsize $\triangleright$};
+\draw[->] (inv1.east) -- (inv2.west);
+\draw[->] (inv2.east) -- (9.2,0) node[right]{$Q$};
+% slave TG (phi-bar) closing the feedback loop
+\node[draw, thick, minimum width=1.1cm, minimum height=0.8cm] (tg2) at (6.0,-1.8) {TG};
+\node[below, font=\scriptsize] at (6.0,-2.25) {$\overline{\phi}$};
+\draw (inv2.east) -- (8.4,0) -- (8.4,-1.8) -- (tg2.east);
+\draw[->] (tg2.west) -- (4.0,-1.8) -- (4.0,-0.0) -- (inv1.west);
+\end{tikzpicture}
+\end{document}
