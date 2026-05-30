@@ -1,0 +1,31 @@
+% MASTER 3 -- Single nMOS inverter (the reusable "inverter atom").
+% Depletion-mode pull-up (gate tied to its own source = output) + enhancement pull-down
+% (gate = V_in), ratio 4:1. THIS is the block you reuse:
+%   - a CMOS/nMOS inverter PAIR (Q14, Q16) = two of these in cascade;
+%   - the tapered driver chain (Q3, Q8, Q20) = many of these, each wider than the last.
+\documentclass[border=10pt]{standalone}
+\usepackage{circuitikz}
+\begin{document}
+\begin{circuitikz}[scale=1.0]
+% supply rail
+\draw (-1.4,6) -- (1.4,6) node[right]{$V_{DD}$};
+% pull-up (depletion load)
+\path (0,4.6) node[nmos] (PU){};
+\draw (PU.D) -- (0,6);
+% pull-down (enhancement driver)
+\path (0,1.8) node[nmos] (PD){};
+\draw (PD.S) -- (0,0.3) node[ground]{};
+% output column between the two devices
+\draw (PU.S) -- (PD.D);
+\coordinate (out) at (0,3.2);
+\node[circ] at (out){};
+\draw (out) -- (2.2,3.2) node[right]{$V_{out}$};
+% depletion load: gate of PU tied to its source (= output)
+\draw (PU.G) -- (-1.2,4.6) -- (-1.2,3.2) -- (out);
+% input to the driver gate
+\draw (PD.G) -- (-2.4,1.8) node[left]{$V_{in}$};
+% annotations
+\node[align=left,font=\scriptsize] at (2.6,4.6) {pull-up\\(depletion, $4{:}1$)};
+\node[align=left,font=\scriptsize] at (2.6,1.8) {pull-down\\(enhancement, $1{:}1$)};
+\end{circuitikz}
+\end{document}
