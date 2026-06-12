@@ -56,21 +56,21 @@ Every TikZ block below uses these styles + one glyph macro (`\mosbox` = a labell
 Charge on a capacitor is Q = CV. The mobile charge in the channel is the part of the gate voltage above threshold:
 $$Q_{channel} = C_g (V_{gc} - V_t)$$
 
-**Step 2 — Gate-to-channel voltage.** The channel is not grounded; its average potential is V_c = (V_s+V_d)/2 = V_ds/2. So
+**Step 2 — Gate-to-channel voltage.** The channel is not grounded; its average potential is Vc = (Vs+Vd)/2 = Vds/2. So
 $$V_{gc} = V_{gs} - \tfrac{V_{ds}}{2}$$
 
-**Step 3 — Gate capacitance.** Modelling the gate as a parallel-plate cap of width W, length L, oxide thickness t_ox:
+**Step 3 — Gate capacitance.** Modelling the gate as a parallel-plate cap of width W, length L, oxide thickness tox:
 $$C_g = \varepsilon_{ox}\frac{WL}{t_{ox}} = C_{ox}WL$$
 
-**Step 4 — Carrier velocity.** Carriers drift at v = μE, where the lateral field is E = V_ds/L. So v = μV_ds/L.
+**Step 4 — Carrier velocity.** Carriers drift at v = μE, where the lateral field is E = Vds/L. So v = μVds/L.
 
 **Step 5 — Time to cross channel** = L/v.
 
 **Step 6 — Current = charge / transit time:**
 $$I_{ds}=\frac{Q_{channel}}{L/v}=\mu C_{ox}\frac{W}{L}\Big(V_{gs}-V_t-\frac{V_{ds}}{2}\Big)V_{ds}=\beta\Big(V_{GT}-\frac{V_{ds}}{2}\Big)V_{ds}$$
-where β = μC_ox(W/L) and V_GT = V_gs − V_t. **This is the linear region.**
+where β = μCox(W/L) and VGT = Vgs − Vt. **This is the linear region.**
 
-**Step 7 — Saturation.** When V_ds = V_dsat = V_GT the channel pinches off. Substitute V_ds = V_GT:
+**Step 7 — Saturation.** When Vds = Vdsat = VGT the channel pinches off. Substitute Vds = VGT:
 $$\boxed{I_{ds}=\frac{\beta}{2}V_{GT}^{2}}$$
 
 **Full model (three regions):**
@@ -114,8 +114,8 @@ $$I_{ds}=\begin{cases}0 & V_{gs}<V_t & \text{(cutoff)}\\[2pt]\beta\big(V_{GT}-V_
 **Definition.** A transmission gate (TG) is a CMOS switch = **one nMOS and one pMOS in parallel**, driven by **complementary** controls C and C̄. It passes both logic 0 and 1 **without degradation**.
 
 **Why both transistors?** (from notes, pages 16–24)
-- nMOS alone passes a **strong 0** but a **weak 1** (rises only to V_DD − V_tn).
-- pMOS alone passes a **strong 1** but a **weak 0** (falls only to |V_tp|).
+- nMOS alone passes a **strong 0** but a **weak 1** (rises only to VDD − Vtn).
+- pMOS alone passes a **strong 1** but a **weak 0** (falls only to |Vtp|).
 - Put in parallel: nMOS handles the 0s, pMOS handles the 1s → output always strongly driven, **levels never degraded**. This is a **fully restored** switch.
 
 **Structure / operation.**
@@ -170,13 +170,13 @@ $$I_{ds}=\begin{cases}0 & V_{gs}<V_t & \text{(cutoff)}\\[2pt]\beta\big(V_{GT}-V_
 
 | Feature | Enhancement mode | Depletion mode |
 |---|---|---|
-| Channel at V_gs = 0 | **No** channel (OFF) | **Pre-formed** channel (ON) |
-| To turn nMOS ON | apply V_gs > V_t (V_t > 0) | already ON; needs V_gs < V_t to turn OFF |
-| Threshold V_t (nMOS) | positive | negative |
+| Channel at Vgs = 0 | **No** channel (OFF) | **Pre-formed** channel (ON) |
+| To turn nMOS ON | apply Vgs > Vt (Vt > 0) | already ON; needs Vgs < Vt to turn OFF |
+| Threshold Vt (nMOS) | positive | negative |
 | Normal logic use | yes — standard CMOS | rarely (mostly analog/special) |
 | "Default" state | normally-OFF | normally-ON |
 
-What your notes **do** cover (page 50): symbols for n-channel and p-channel **enhancement** MOSFETs, and that for pMOS holes conduct, body tied to V_DD.
+What your notes **do** cover (page 50): symbols for n-channel and p-channel **enhancement** MOSFETs, and that for pMOS holes conduct, body tied to VDD.
 
 **Reasoning recap:** the difference is whether a channel exists with zero gate voltage — enhancement must be "enhanced" into existence, depletion must be "depleted" away.
 
@@ -184,22 +184,22 @@ What your notes **do** cover (page 50): symbols for n-channel and p-channel **en
 
 # Q4. Explain the DC transfer characteristics of a CMOS inverter (10M)
 
-**What it is.** The DC transfer curve plots V_out vs V_in (input changed slowly so capacitors fully settle). Found by enforcing I_dsn = |I_dsp| at every V_in.
+**What it is.** The DC transfer curve plots Vout vs Vin (input changed slowly so capacitors fully settle). Found by enforcing Idsn = |Idsp| at every Vin.
 
-**Bias relations** (notes p59): nMOS source = GND → V_gsn = V_in, V_dsn = V_out. pMOS source = V_DD → V_gsp = V_in − V_DD, V_dsp = V_out − V_DD. Assume V_tp = −V_tn and size pMOS ~2–3× wider so β_n = β_p.
+**Bias relations** (notes p59): nMOS source = GND → Vgsn = Vin, Vdsn = Vout. pMOS source = VDD → Vgsp = Vin − VDD, Vdsp = Vout − VDD. Assume Vtp = −Vtn and size pMOS ~2–3× wider so βn = βp.
 
 **Five regions (A–E):**
 
-| Region | V_in range | pMOS | nMOS | V_out |
+| Region | Vin range | pMOS | nMOS | Vout |
 |---|---|---|---|---|
-| A | 0 ≤ V_in < V_tn | linear | cutoff | V_DD |
-| B | V_tn ≤ V_in < V_DD/2 | linear | saturated | > V_DD/2 |
-| C | V_in = V_DD/2 | saturated | saturated | drops sharply |
-| D | V_DD/2 < V_in ≤ V_DD−\|V_tp\| | saturated | linear | < V_DD/2 |
-| E | V_in > V_DD−\|V_tp\| | cutoff | linear | 0 |
+| A | 0 ≤ Vin < Vtn | linear | cutoff | VDD |
+| B | Vtn ≤ Vin < VDD/2 | linear | saturated | > VDD/2 |
+| C | Vin = VDD/2 | saturated | saturated | drops sharply |
+| D | VDD/2 < Vin ≤ VDD−\|Vtp\| | saturated | linear | < VDD/2 |
+| E | Vin > VDD−\|Vtp\| | cutoff | linear | 0 |
 
-- In **C** both transistors saturate; ideal slope is −∞ → **infinite gain** at V_in = V_DD/2 (real devices have finite output resistance → finite, broader region C).
-- Supply current I_DD = I_dsn = |I_dsp| is ~0 near the rails and forms a **current pulse** peaking near V_in = V_DD/2 (both transistors momentarily ON).
+- In **C** both transistors saturate; ideal slope is −∞ → **infinite gain** at Vin = VDD/2 (real devices have finite output resistance → finite, broader region C).
+- Supply current IDD = Idsn = |Idsp| is ~0 near the rails and forms a **current pulse** peaking near Vin = VDD/2 (both transistors momentarily ON).
 
 **Diagram — M4 (transfer curve):**
 ```
@@ -229,17 +229,17 @@ VDD/2|          \
 \end{tikzpicture}
 ```
 
-**Reasoning recap:** sweep V_in; at each value the two transistors trade who's ON; the operating point is where their currents match; collecting those points draws the S-curve, steepest (highest gain) when both are saturated at mid-rail.
+**Reasoning recap:** sweep Vin; at each value the two transistors trade who's ON; the operating point is where their currents match; collecting those points draws the S-curve, steepest (highest gain) when both are saturated at mid-rail.
 
 ---
 
 # Q5. Effect of channel length modulation on an nMOS transistor (5M)
 
-**Ideal:** in saturation I_ds is independent of V_ds → perfect current source.
+**Ideal:** in saturation Ids is independent of Vds → perfect current source.
 
-**Reality:** the drain–body p–n junction forms a depletion region of width L_d that grows with V_db. This eats into the channel:
+**Reality:** the drain–body p–n junction forms a depletion region of width Ld that grows with Vdb. This eats into the channel:
 $$L_{eff}=L-L_d$$
-Shorter effective channel → **higher current**, so I_ds **rises slightly with V_ds** in saturation (the "flat" curves tilt up). Modelled by an Early-voltage factor:
+Shorter effective channel → **higher current**, so Ids **rises slightly with Vds** in saturation (the "flat" curves tilt up). Modelled by an Early-voltage factor:
 $$I_{ds}=\frac{\beta}{2}V_{GT}^{2}\Big(1+\frac{V_{ds}}{V_A}\Big)$$
 
 **Impact:** important to **analog** designers (it reduces amplifier gain). Generally **unimportant for digital** behaviour.
@@ -267,32 +267,32 @@ $$I_{ds}=\frac{\beta}{2}V_{GT}^{2}\Big(1+\frac{V_{ds}}{V_A}\Big)$$
 \end{tikzpicture}
 ```
 
-**Reasoning recap:** rising V_ds widens the drain depletion region → effective channel shortens → current creeps up instead of staying flat.
+**Reasoning recap:** rising Vds widens the drain depletion region → effective channel shortens → current creeps up instead of staying flat.
 
 ---
 
 # Q6. Explain all the non-ideal I-V effects in detail (10M)
 
-**1. Mobility degradation.** High vertical field (V_gs/t_ox) pulls carriers into the oxide interface; they scatter off surface roughness → μ falls. Model:
-$$\mu_{eff}=\frac{\mu_0}{1+\theta(V_{gs}-V_t)}$$ → less current than the square law predicts at high V_gs.
+**1. Mobility degradation.** High vertical field (Vgs/tox) pulls carriers into the oxide interface; they scatter off surface roughness → μ falls. Model:
+$$\mu_{eff}=\frac{\mu_0}{1+\theta(V_{gs}-V_t)}$$ → less current than the square law predicts at high Vgs.
 
-**2. Velocity saturation.** Lateral field E = V_ds/L. Because L < 1 µm, even moderate V_ds gives a huge field; carrier velocity caps at v_sat instead of μE:
+**2. Velocity saturation.** Lateral field E = Vds/L. Because L < 1 µm, even moderate Vds gives a huge field; carrier velocity caps at vsat instead of μE:
 $$v=\begin{cases}\dfrac{\mu_{eff}E}{1+E/E_c}& E<E_c\\ v_{sat}& E\ge E_c\end{cases},\quad E_c=\frac{2v_{sat}}{\mu_{eff}}$$
-Result: saturation current grows **less than quadratically** with V_gs.
+Result: saturation current grows **less than quadratically** with Vgs.
 
-**3. Channel-length modulation.** L_eff = L − L_d; I_ds rises with V_ds in saturation: I_ds = (β/2)V_GT²(1 + V_ds/V_A). (See Q5.)
+**3. Channel-length modulation.** Leff = L − Ld; Ids rises with Vds in saturation: Ids = (β/2)VGT²(1 + Vds/VA). (See Q5.)
 
 **4. Threshold-voltage effects.**
- - **Body effect:** source–body voltage V_sb raises V_t: V_t = V_t0 + γ(√(φ_s+V_sb) − √φ_s).
- - **DIBL:** drain field lowers the barrier: V_t = V_t0 − ηV_ds (η ≈ 0.1 = 100 mV/V); increases I_ds in saturation and worsens subthreshold leakage.
- - **Short-channel effect (V_t roll-off):** for small L, source/drain depletion regions take over part of the channel → V_t shifts with L. Also a narrow-channel effect (V_t varies with W).
+ - **Body effect:** source–body voltage Vsb raises Vt: Vt = Vt0 + γ(√(φs+Vsb) − √φs).
+ - **DIBL:** drain field lowers the barrier: Vt = Vt0 − ηVds (η ≈ 0.1 = 100 mV/V); increases Ids in saturation and worsens subthreshold leakage.
+ - **Short-channel effect (Vt roll-off):** for small L, source/drain depletion regions take over part of the channel → Vt shifts with L. Also a narrow-channel effect (Vt varies with W).
 
 **5. Leakage** (transistor "OFF" still conducts):
- - **Subthreshold:** for V_gs < V_t, current falls exponentially (weak inversion): I_ds ∝ e^{(V_gs−V_t)/nV_T}; worsens with V_ds via DIBL.
- - **Gate leakage:** quantum tunneling through thin oxide; I_gate = WA(V_DD/t_ox)² e^{−B t_ox/V_DD} — grows exponentially as t_ox shrinks.
+ - **Subthreshold:** for Vgs < Vt, current falls exponentially (weak inversion): Ids ∝ e^{(Vgs−Vt)/nVT}; worsens with Vds via DIBL.
+ - **Gate leakage:** quantum tunneling through thin oxide; Igate = WA(VDD/tox)² e^{−B tox/VDD} — grows exponentially as tox shrinks.
  - **Junction leakage:** reverse-biased source/drain-to-body diodes; plus BTBT and GIDL.
 
-**6. Temperature dependence.** Mobility ↓ with T (μ(T)=μ(T_r)(T/T_r)^{−1.5}); v_sat ↓; I_on at high V_DD ↓; subthreshold leakage ↑ exponentially with T.
+**6. Temperature dependence.** Mobility ↓ with T (μ(T)=μ(Tr)(T/Tr)^{−1.5}); vsat ↓; Ion at high VDD ↓; subthreshold leakage ↑ exponentially with T.
 
 **Diagram — M7 (subthreshold log-plot):**
 ```
@@ -328,15 +328,15 @@ Result: saturation current grows **less than quadratically** with V_gs.
 
 p-type body, two n+ regions (source, drain), poly gate over thin oxide, body grounded.
 
-**(a) Cutoff — V_gs < V_t.** No inversion layer; source and drain isolated by reverse-biased junctions. **I_ds = 0** (open switch).
+**(a) Cutoff — Vgs < Vt.** No inversion layer; source and drain isolated by reverse-biased junctions. **Ids = 0** (open switch).
 
-**(b) Linear/Triode — V_gs > V_t and 0 < V_ds < V_gs−V_t** (so V_gd > V_t).
-Channel is inverted **everywhere**. A lateral field drives electrons source→drain. Channel is **tapered** (thick at source, thin at drain). Current rises with V_ds:
+**(b) Linear/Triode — Vgs > Vt and 0 < Vds < Vgs−Vt** (so Vgd > Vt).
+Channel is inverted **everywhere**. A lateral field drives electrons source→drain. Channel is **tapered** (thick at source, thin at drain). Current rises with Vds:
 $$I_{ds}=\beta\big(V_{GT}-V_{ds}/2\big)V_{ds}$$
-(At V_ds = 0 the channel is uniform and no current flows — "filled pipe, no pressure.")
+(At Vds = 0 the channel is uniform and no current flows — "filled pipe, no pressure.")
 
-**(c) Saturation — V_gs > V_t and V_ds ≥ V_gs−V_t** (so V_gd < V_t).
-Channel **pinches off** before the drain. Current becomes nearly independent of V_ds:
+**(c) Saturation — Vgs > Vt and Vds ≥ Vgs−Vt** (so Vgd < Vt).
+Channel **pinches off** before the drain. Current becomes nearly independent of Vds:
 $$I_{ds}=\frac{\beta}{2}V_{GT}^{2}$$
 
 **Diagram — M1 (the 4 states):**
@@ -364,7 +364,7 @@ $$I_{ds}=\frac{\beta}{2}V_{GT}^{2}$$
 \end{tikzpicture}
 ```
 
-**Reasoning recap:** raise V_gs to make a channel (cutoff→on); raise V_ds to push current (linear); raise V_ds too far and the drain end starves of inversion (pinch-off→saturation).
+**Reasoning recap:** raise Vgs to make a channel (cutoff→on); raise Vds to push current (linear); raise Vds too far and the drain end starves of inversion (pinch-off→saturation).
 
 ---
 
@@ -372,12 +372,12 @@ $$I_{ds}=\frac{\beta}{2}V_{GT}^{2}$$
 
 ## (a) Noise Margin
 How much noise a signal tolerates before being misread. Defined from four levels:
-- V_OH = min HIGH **output**, V_OL = max LOW **output**
-- V_IH = min HIGH **input**, V_IL = max LOW **input**
+- VOH = min HIGH **output**, VOL = max LOW **output**
+- VIH = min HIGH **input**, VIL = max LOW **input**
 
 $$NM_H = V_{OH}-V_{IH}\qquad NM_L=V_{IL}-V_{OL}$$
 
-V_IL and V_IH are the **unity-gain points** (slope = −1) on the transfer curve. Bigger margins → better immunity. Between V_IL and V_IH is the **indeterminate region** (both transistors conduct, unstable).
+VIL and VIH are the **unity-gain points** (slope = −1) on the transfer curve. Bigger margins → better immunity. Between VIL and VIH is the **indeterminate region** (both transistors conduct, unstable).
 
 ```
  VDD ──────── VOH ──┐
@@ -404,12 +404,12 @@ V_IL and V_IH are the **unity-gain points** (slope = −1) on the transfer curve
 ```
 
 ## (b) Body effect on threshold voltage
-The body is an implicit 4th terminal. A source-to-body voltage V_sb increases the charge needed to invert the channel, so **V_t rises**:
+The body is an implicit 4th terminal. A source-to-body voltage Vsb increases the charge needed to invert the channel, so **Vt rises**:
 $$V_t=V_{t0}+\gamma\Big(\sqrt{\phi_s+V_{sb}}-\sqrt{\phi_s}\Big)$$
-- V_t0 = threshold at V_sb = 0, φ_s = surface potential, γ = body-effect coefficient (0.4–1 V^½), γ = √(2qε_si N_A)/C_ox.
-- Linearized for small V_sb: V_t = V_t0 + k_γ V_sb.
+- Vt0 = threshold at Vsb = 0, φs = surface potential, γ = body-effect coefficient (0.4–1 V^½), γ = √(2qεsi NA)/Cox.
+- Linearized for small Vsb: Vt = Vt0 + kγ Vsb.
 
-**Reasoning recap:** noise margin = gap between what a gate guarantees to output and what the next gate accepts; body effect = a back-bias makes the channel harder to invert, pushing V_t up.
+**Reasoning recap:** noise margin = gap between what a gate guarantees to output and what the next gate accepts; body effect = a back-bias makes the channel harder to invert, pushing Vt up.
 
 ---
 
@@ -460,11 +460,11 @@ Because TGs are used, both outputs pass undegraded but the mux is **non-restorin
 
 MOS capacitor: gate / oxide / p-type body.
 
-**(a) Accumulation — V_g < 0.** Negative gate attracts the body's holes to the surface → holes **accumulate** at the oxide interface. Surface stays p-type. No channel.
+**(a) Accumulation — Vg < 0.** Negative gate attracts the body's holes to the surface → holes **accumulate** at the oxide interface. Surface stays p-type. No channel.
 
-**(b) Depletion — 0 < V_g < V_t.** Positive gate **repels holes**, leaving fixed negative acceptor ions → a carrier-free **depletion region**. Still no electron channel; device OFF.
+**(b) Depletion — 0 < Vg < Vt.** Positive gate **repels holes**, leaving fixed negative acceptor ions → a carrier-free **depletion region**. Still no electron channel; device OFF.
 
-**(c) Inversion — V_g > V_t.** Stronger field now **attracts electrons** to the surface, forming a thin n-type **inversion layer (channel)** over the depletion region. Channel connects source↔drain → device ON.
+**(c) Inversion — Vg > Vt.** Stronger field now **attracts electrons** to the surface, forming a thin n-type **inversion layer (channel)** over the depletion region. Channel connects source↔drain → device ON.
 
 **Diagram — M2:**
 ```
@@ -498,7 +498,7 @@ MOS capacitor: gate / oxide / p-type body.
 
 # Q11. Design a CMOS NAND gate and analyse all input combinations (7M)
 
-**Structure:** two nMOS in **series** (pull-down) between Y and GND; two pMOS in **parallel** (pull-up) between V_DD and Y.
+**Structure:** two nMOS in **series** (pull-down) between Y and GND; two pMOS in **parallel** (pull-up) between VDD and Y.
 
 ```
         VDD
@@ -561,7 +561,7 @@ Only when A = B = 1 are **both** series nMOS ON (path to GND) and both pMOS OFF 
 | 1 | 0 | 0 |
 | 1 | 1 | 1 |
 
-Tristate inverter internals (4-transistor stack): pMOS(A) – pMOS(EN̄) – [Y] – nMOS(EN) – nMOS(A). EN/EN̄ transistors gate the output; the A transistors do the inversion. It is **restoring** (output actively driven from V_DD/GND).
+Tristate inverter internals (4-transistor stack): pMOS(A) – pMOS(EN̄) – [Y] – nMOS(EN) – nMOS(A). EN/EN̄ transistors gate the output; the A transistors do the inversion. It is **restoring** (output actively driven from VDD/GND).
 
 ```latex
 % Q12 -- tristate buffer = inverter followed by tristate inverter
@@ -579,37 +579,37 @@ Tristate inverter internals (4-transistor stack): pMOS(A) – pMOS(EN̄) – [Y]
 
 ---
 
-# Q13. Find k_n in saturation. I_DS = 4 mA, V_GS = 3 V, V_t = 1 V, W/L = 1 (5M)
+# Q13. Find kn in saturation. IDS = 4 mA, VGS = 3 V, Vt = 1 V, W/L = 1 (5M)
 
 Saturation: $I_{DS}=\dfrac{k_n}{2}\dfrac{W}{L}(V_{GS}-V_t)^2$
 
 $$4\text{ mA}=\frac{k_n}{2}(1)(3-1)^2=\frac{k_n}{2}(4)=2k_n$$
 $$\boxed{k_n = 2\ \text{mA/V}^2}$$
 
-**Steps:** confirm saturation form → plug numbers → (3−1)² = 4 → 4mA = 2k_n → k_n = 2 mA/V².
+**Steps:** confirm saturation form → plug numbers → (3−1)² = 4 → 4mA = 2kn → kn = 2 mA/V².
 
 ---
 
-# Q14. Region of operation and I_DS. V_GS = 3 V, V_t = 1 V, W/L = 1 (5M)
+# Q14. Region of operation and IDS. VGS = 3 V, Vt = 1 V, W/L = 1 (5M)
 
-⚠️ **This question is missing data as written: no V_DS and no k_n are given.** I cannot fully solve it as stated. I'll be honest and give the method + the most likely intended answer.
+⚠️ **This question is missing data as written: no VDS and no kn are given.** I cannot fully solve it as stated. I'll be honest and give the method + the most likely intended answer.
 
-- **Region:** V_GS − V_t = 2 V > 0, so the device is ON. It is in **saturation if V_DS ≥ 2 V**, otherwise linear. (Without V_DS this cannot be decided for certain.)
-- **Drain current:** needs k_n. If this question **continues from Q13** (k_n = 2 mA/V²) and V_DS ≥ 2 V (saturation), then
+- **Region:** VGS − Vt = 2 V > 0, so the device is ON. It is in **saturation if VDS ≥ 2 V**, otherwise linear. (Without VDS this cannot be decided for certain.)
+- **Drain current:** needs kn. If this question **continues from Q13** (kn = 2 mA/V²) and VDS ≥ 2 V (saturation), then
 $$I_{DS}=\frac{k_n}{2}(V_{GS}-V_t)^2=\frac{2}{2}(2)^2=4\ \text{mA}$$
 
-If a V_DS value is printed on your paper, tell me and I'll redo it exactly.
+If a VDS value is printed on your paper, tell me and I'll redo it exactly.
 
-**Steps:** check V_GS−V_t>0 (ON) → compare V_DS to V_GS−V_t for region → apply matching formula with k_n.
+**Steps:** check VGS−Vt>0 (ON) → compare VDS to VGS−Vt for region → apply matching formula with kn.
 
 ---
 
-# Q15. Region and I_DS. V_GS = 1.5 V, V_t = 2 V, V_DS = 0.5 V, W/L = 1 (5M)
+# Q15. Region and IDS. VGS = 1.5 V, Vt = 2 V, VDS = 0.5 V, W/L = 1 (5M)
 
-V_GS = 1.5 V < V_t = 2 V → **cutoff** (no channel).
+VGS = 1.5 V < Vt = 2 V → **cutoff** (no channel).
 $$\boxed{I_{DS}=0}$$
 
-**Steps:** compare V_GS to V_t → 1.5 < 2 → below threshold → cutoff → I_DS = 0 (V_DS irrelevant).
+**Steps:** compare VGS to Vt → 1.5 < 2 → below threshold → cutoff → IDS = 0 (VDS irrelevant).
 
 ---
 
@@ -617,17 +617,17 @@ $$\boxed{I_{DS}=0}$$
 
 ⚠️ **The actual circuit diagrams ("given below") were not included in what you gave me, so I cannot read off the specific node voltages.** I won't guess them. Instead, here are the **exact rules from your notes (p16–21)** — apply them to whatever your paper shows:
 
-**nMOS pass transistor (gate = V_DD, passing logic):**
+**nMOS pass transistor (gate = VDD, passing logic):**
 - Passes **strong 0** → output = 0 V.
-- Passes **weak/degraded 1** → output = **V_DD − V_tn** (threshold drop).
+- Passes **weak/degraded 1** → output = **VDD − Vtn** (threshold drop).
 
 **pMOS pass transistor (gate = GND, passing logic):**
-- Passes **strong 1** → output = V_DD.
-- Passes **weak/degraded 0** → output = **|V_tp|**.
+- Passes **strong 1** → output = VDD.
+- Passes **weak/degraded 0** → output = **|Vtp|**.
 
-**Series of nMOS passing a 1:** no *extra* degradation — output stays at **V_DD − V_tn** (one threshold drop total), *provided each gate is at V_DD*.
+**Series of nMOS passing a 1:** no *extra* degradation — output stays at **VDD − Vtn** (one threshold drop total), *provided each gate is at VDD*.
 
-**If a degraded output drives the next transistor's gate:** that stage drops **another** V_tn → e.g. **V_DD − 2V_tn** (cascaded threshold drops).
+**If a degraded output drives the next transistor's gate:** that stage drops **another** Vtn → e.g. **VDD − 2Vtn** (cascaded threshold drops).
 
 **Transmission gate (nMOS∥pMOS):** passes both **strong 0 and strong 1** — no degradation.
 
@@ -635,15 +635,15 @@ $$\boxed{I_{DS}=0}$$
 
 If you paste the two circuits (or describe them: which transistor type, gate voltage, input value, series/cascade), I'll compute the exact output voltages.
 
-**Reasoning recap:** an nMOS can't pull its source above V_DD−V_tn and a pMOS can't pull above-GND below |V_tp|; track those drops node by node, adding a fresh drop only when a degraded signal drives a gate.
+**Reasoning recap:** an nMOS can't pull its source above VDD−Vtn and a pMOS can't pull above-GND below |Vtp|; track those drops node by node, adding a fresh drop only when a degraded signal drives a gate.
 
 ---
 
 # Q18. Implement a tristate inverter and explain its working in detail (7M)
 
-**What it is.** An inverter whose output has **three states**: logic 1, logic 0, and **high-impedance (Z)**. It inverts when enabled and electrically disconnects when disabled. It is **restoring** (output actively driven from V_DD/GND).
+**What it is.** An inverter whose output has **three states**: logic 1, logic 0, and **high-impedance (Z)**. It inverts when enabled and electrically disconnects when disabled. It is **restoring** (output actively driven from VDD/GND).
 
-**Structure — 4-transistor series stack** (V_DD at top, GND at bottom):
+**Structure — 4-transistor series stack** (VDD at top, GND at bottom):
 ```
         VDD
          │
@@ -668,7 +668,7 @@ The two **A**-gated transistors form the actual inverter; the **EN / EN̄** tran
 | 0 | 1 | both OFF | **Z** (floating) |
 | 1 | 0 | both ON (act as wires) | **Ā** (normal inverter) |
 
-- **EN = 0:** both enable transistors OFF → the path from V_DD and from GND to Y is broken → **Y floats (Z)**, regardless of A.
+- **EN = 0:** both enable transistors OFF → the path from VDD and from GND to Y is broken → **Y floats (Z)**, regardless of A.
 - **EN = 1:** both enable transistors ON → conceptually removed (just wires) → remaining top-pMOS(A) + bottom-nMOS(A) = ordinary inverter → **Y = Ā**.
 
 **Note (from notes p28):** it does **not** obey the conduction-complement rule, because it deliberately lets the output float for some input combinations. The complementary enable EN̄ may be generated inside the cell or routed in.
@@ -692,39 +692,39 @@ The two **A**-gated transistors form the actual inverter; the **EN / EN̄** tran
 
 # Q19. Explain (a) mobility degradation (b) velocity saturation (8M)
 
-**(a) Mobility degradation.** Caused by the **high vertical field** (V_gs/t_ox). A high gate voltage pulls carriers hard against the oxide interface, where they collide with surface roughness and scatter more → effective mobility μ falls. Because μ drops, the drive current is **less than the square law predicts at high V_gs**.
+**(a) Mobility degradation.** Caused by the **high vertical field** (Vgs/tox). A high gate voltage pulls carriers hard against the oxide interface, where they collide with surface roughness and scatter more → effective mobility μ falls. Because μ drops, the drive current is **less than the square law predicts at high Vgs**.
 
 Model:
 $$\mu_{eff}=\frac{\mu_0}{1+\theta(V_{gs}-V_t)}\qquad(\text{as }V_{gs}\uparrow,\ \mu_{eff}\downarrow)$$
 From notes (more detailed form):
 $$\mu_{eff\text{-}n}=\frac{540}{1+\left(\frac{V_{gs}+V_t}{0.54\,t_{ox}}\right)^{1.85}}\ \tfrac{\text{cm}^2}{\text{V·s}}$$
 
-**(b) Velocity saturation.** Carriers normally drift at v = μE, where E = V_ds/L is the **lateral field**. Since L < 1 µm, even a moderate V_ds gives a very large E. At high fields the velocity stops rising linearly and **caps at a maximum v_sat**:
+**(b) Velocity saturation.** Carriers normally drift at v = μE, where E = Vds/L is the **lateral field**. Since L < 1 µm, even a moderate Vds gives a very large E. At high fields the velocity stops rising linearly and **caps at a maximum vsat**:
 $$v=\begin{cases}\dfrac{\mu_{eff}E}{1+E/E_c}& E<E_c\\[4pt] v_{sat}& E\ge E_c\end{cases}\qquad E_c=\frac{2v_{sat}}{\mu_{eff}}$$
-The critical voltage is V_c = E_c·L. Result: saturation current grows **less than quadratically** with V_gs (lower I_ds than the ideal model at high V_ds).
+The critical voltage is Vc = Ec·L. Result: saturation current grows **less than quadratically** with Vgs (lower Ids than the ideal model at high Vds).
 
 **Difference in one line:** mobility degradation is a **vertical-field** effect (gate pushes carriers into the surface); velocity saturation is a **lateral-field** effect (source–drain field caps carrier speed). Both reduce current below the ideal square law.
 
-**Reasoning recap:** big gate field → carriers scrape the oxide → slower (μ↓); big drain field → carriers hit their top speed v_sat → current flattens early.
+**Reasoning recap:** big gate field → carriers scrape the oxide → slower (μ↓); big drain field → carriers hit their top speed vsat → current flattens early.
 
 ---
 
-# Q20. How inverter DC characteristics vary with β_p/β_n (5M)
+# Q20. How inverter DC characteristics vary with βp/βn (5M)
 
-Let **r = β_p/β_n**. With β_n = β_p (r = 1) the switching threshold V_inv = V_DD/2 (maximizes noise margins; equal charge/discharge currents).
+Let **r = βp/βn**. With βn = βp (r = 1) the switching threshold Vinv = VDD/2 (maximizes noise margins; equal charge/discharge currents).
 
 Changing r **shifts the switching threshold horizontally**, but the transition stays **sharp**:
 
-| Ratio | Name | Stronger device | Switching threshold V_inv |
+| Ratio | Name | Stronger device | Switching threshold Vinv |
 |---|---|---|---|
-| r > 1 | **HI-skew** | stronger pMOS | **higher** than V_DD/2 (shifts right) |
-| r = 1 | normal/unskewed | balanced | = V_DD/2 |
-| r < 1 | **LO-skew** | weaker pMOS | **lower** than V_DD/2 (shifts left) |
+| r > 1 | **HI-skew** | stronger pMOS | **higher** than VDD/2 (shifts right) |
+| r = 1 | normal/unskewed | balanced | = VDD/2 |
+| r < 1 | **LO-skew** | weaker pMOS | **lower** than VDD/2 (shifts left) |
 
-- **HI-skew (stronger pMOS):** at V_in = V_DD/2 the pMOS wins → output stays high longer → input threshold must be **raised** to switch.
+- **HI-skew (stronger pMOS):** at Vin = VDD/2 the pMOS wins → output stays high longer → input threshold must be **raised** to switch.
 - **LO-skew (weaker pMOS):** nMOS wins earlier → **lower** switching threshold.
 
-From notes: V_inv is set by I_dsn = |I_dsp|, i.e. by where (β_n/2)(V_in−V_tn)² = (β_p/2)(V_in−V_DD−V_tp)². As the ratio changes, this balance point (and hence V_inv) moves; the curve only **slides sideways**, it does not lose steepness.
+From notes: Vinv is set by Idsn = |Idsp|, i.e. by where (βn/2)(Vin−Vtn)² = (βp/2)(Vin−VDD−Vtp)². As the ratio changes, this balance point (and hence Vinv) moves; the curve only **slides sideways**, it does not lose steepness.
 
 **Diagram (M4, shifted curves):**
 ```
@@ -752,7 +752,7 @@ From notes: V_inv is set by I_dsn = |I_dsp|, i.e. by where (β_n/2)(V_in−V_tn)
 \end{tikzpicture}
 ```
 
-**Reasoning recap:** the switching point is where the two transistor currents balance; making pMOS relatively stronger (r↑) pushes that balance to a higher V_in, sliding the whole S-curve right without flattening it.
+**Reasoning recap:** the switching point is where the two transistor currents balance; making pMOS relatively stronger (r↑) pushes that balance to a higher Vin, sliding the whole S-curve right without flattening it.
 
 ---
 
@@ -841,7 +841,7 @@ From notes: V_inv is set by I_dsn = |I_dsp|, i.e. by where (β_n/2)(V_in−V_tn)
 
 # Q23. Design a CMOS NOR gate and analyse all input combinations (6M)
 
-**Structure:** two nMOS in **parallel** (pull-down) between Y and GND; two pMOS in **series** (pull-up) between V_DD and Y.
+**Structure:** two nMOS in **parallel** (pull-down) between Y and GND; two pMOS in **series** (pull-up) between VDD and Y.
 
 ```
         VDD
@@ -865,7 +865,7 @@ Function: **Y = (A + B)′**
 | 1 | 0 | ON | OFF | 0 |
 | 1 | 1 | ON | OFF | 0 |
 
-- **A = B = 0:** both parallel nMOS OFF; both series pMOS ON → path to V_DD → **Y = 1**.
+- **A = B = 0:** both parallel nMOS OFF; both series pMOS ON → path to VDD → **Y = 1**.
 - **Any input = 1:** that nMOS turns ON (pulls Y to 0) and breaks the series pMOS path → **Y = 0**.
 
 ```latex
@@ -888,6 +888,6 @@ Function: **Y = (A + B)′**
 
 ## Honesty checklist
 - **Q3** depletion-mode content is **[outside notes]** (your notes cover only enhancement).
-- **Q14** is missing V_DS / k_n — answered conditionally.
+- **Q14** is missing VDS / kn — answered conditionally.
 - **Q16, Q17** circuits were not provided — gave the governing rules only.
 - **TikZ blocks are NOT compiled here** (no LaTeX on this machine). They encode the correct *topology*, but exact coordinates may need small nudges on Overleaf. Paste the **LaTeX setup block once** into your preamble first — every diagram needs its `\mosbox` macro and the colour/line styles.
