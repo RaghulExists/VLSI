@@ -1,0 +1,28 @@
+% MASTER 6 -- Distributed RC ladder (series R, shunt C to ground) + output buffer.
+% Same model for BOTH Q4 (cascaded pass transistors) and Q5 (long polysilicon wire):
+% delay grows as the square of the number of sections / length, so insert a buffer.
+\documentclass[border=10pt]{standalone}
+\usepackage{circuitikz}
+\begin{document}
+\begin{circuitikz}[scale=1.0]
+% series resistors along the line
+\draw (0,2) node[left]{$V_{in}$}
+  to[R,l=$R$] (2,2)
+  to[R,l=$R$] (4,2)
+  to[R,l=$R$] (6,2)
+  to[R,l=$R$] (8,2) coordinate (end);
+% shunt capacitors to ground at each node
+\foreach \x in {2,4,6,8}{
+  \draw (\x,2) to[C,l_=$C$] (\x,0.4);
+  \draw (\x,0.4) node[ground]{};
+}
+% output buffer (triangle, non-inverting) at the end
+\draw (end) -- (8.8,2);
+\draw[fill=blue!10] (8.8,1.55) -- (8.8,2.45) -- (9.8,2) -- cycle;
+\draw (9.8,2) -- (10.5,2) node[right]{$V_{out}$};
+\node[font=\scriptsize] at (9.25,1.25) {buffer};
+% note
+\node[align=center,font=\scriptsize] at (4,3.0)
+  {RC ladder: $\;\tau_{prop}\propto n^2$ (limit $\approx 4$ sections, then buffer)};
+\end{circuitikz}
+\end{document}

@@ -1,0 +1,25 @@
+% MASTER 5 -- Total delay vs width-ratio b for a tapered chain (the "U-curve").
+% T_d proportional to b/ln(b); minimum at b = e. Covers Q8 (shape) and Q15 (the d/db = 0
+% argument giving ln b = 1 -> b = e).
+\documentclass[border=10pt]{standalone}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta}
+\begin{document}
+\begin{tikzpicture}[>=Latex,font=\small,line width=0.6pt]
+% axes
+\draw[->] (0,0) -- (6.6,0) node[right]{$b$ (width ratio per stage)};
+\draw[->] (0,0) -- (0,4.8) node[above]{total delay $T_d$};
+% curve  Td(b) = b / ln(b)
+\draw[thick,blue,domain=1.55:6.2,samples=120,smooth]
+      plot (\x,{\x/ln(\x)});
+% minimum at b = e (= 2.71828), Td = e
+\draw[dashed] (2.71828,0) -- (2.71828,2.71828);
+\draw[dashed] (0,2.71828) -- (2.71828,2.71828);
+\fill (2.71828,2.71828) circle (2pt);
+\node[below] at (2.71828,-0.05) {$b=e$};
+\node[left] at (0,2.71828) {min};
+% regions
+\node[align=center,font=\scriptsize] at (1.7,4.0) {few/large\\stages slow};
+\node[align=center,font=\scriptsize] at (5.2,4.0) {too many\\stages};
+\end{tikzpicture}
+\end{document}

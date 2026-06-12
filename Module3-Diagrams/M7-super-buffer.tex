@@ -1,0 +1,40 @@
+% MASTER 7 -- Inverting nMOS super buffer (Pucknell Fig 4-12). Covers Q9.
+% Stage 1 (T1 depletion load + T2 driver) inverts V_in to node A.
+% Stage 2 (T3 depletion load + T4 driver): T4 gate = V_in, T3 gate = node A.
+% On the charging edge the gate of the output load device sits at ~V_DD (about twice the
+% usual V_gs), so I_ds ~ V_gs is larger -> faster, more symmetric edges.
+\documentclass[border=10pt]{standalone}
+\usepackage{circuitikz}
+\begin{document}
+\begin{circuitikz}[scale=0.95]
+\draw (-2.6,6.2) -- (6.2,6.2) node[right]{$V_{DD}$};
+\draw (-2.6,0)   -- (6.2,0)   node[right]{GND};
+% ===== stage 1 =====
+\path (0,4.6) node[nmos] (T1){};
+\draw (T1.D) -- (0,6.2);
+\path (0,1.8) node[nmos] (T2){};
+\draw (T2.S) -- (0,0);
+\draw (T1.S) -- (T2.D);                 % output column of stage 1
+\coordinate (A) at (0,3.2);
+\node[circ] at (A){}; \node[above right] at (A) {$A$};
+\draw (T1.G) -- (-1.2,4.6) -- (-1.2,3.2) -- (A);   % T1 depletion: gate to source(=A)
+\draw (T2.G) -- (-2.6,1.8) coordinate (vin) node[left]{$V_{in}$};
+\node[left,font=\scriptsize] at (-0.7,4.6) {T1};
+\node[left,font=\scriptsize] at (-0.7,1.8) {T2};
+% ===== stage 2 =====
+\path (4,4.6) node[nmos] (T3){};
+\draw (T3.D) -- (4,6.2);
+\path (4,1.8) node[nmos] (T4){};
+\draw (T4.S) -- (4,0);
+\draw (T3.S) -- (T4.D);                 % output column of stage 2
+\coordinate (out) at (4,3.2);
+\node[circ] at (out){};
+\draw (out) -- (5.6,3.2) node[right]{$V_{out}$};
+\node[left,font=\scriptsize] at (3.3,4.6) {T3};
+\node[left,font=\scriptsize] at (3.3,1.8) {T4};
+% T3 gate driven by node A (route through the clear gap)
+\draw (T3.G) -- (1.4,4.6) -- (1.4,3.2) -- (A);
+% T4 gate driven by V_in (route underneath, y=0.9)
+\draw (T4.G) -- (1.4,1.8) -- (1.4,0.9) -- (-2.6,0.9) -- (vin);
+\end{circuitikz}
+\end{document}
